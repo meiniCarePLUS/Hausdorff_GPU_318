@@ -8,7 +8,7 @@
 ./sample_data/model/inspired_mesh.obj 4288 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 65.1072
+[bvh_build_cost] 70.31
 [culling rate] 0.594683
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 14.7556
-[reduce_bound_cost] 241.54
-[total_cost] 256.295
+[first_travel_cost] 14.9145
+[reduce_bound_cost] 244.158
+[total_cost] 259.073
 [voronoi_count] 0
 [mid_subdivide_count] 95446
 [total_subdivision_count] 95446

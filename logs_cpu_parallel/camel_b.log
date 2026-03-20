@@ -1,32 +1,31 @@
-# [info] vertex 2032 face 3576
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 2032
 [mesh_0_num_of_faces] 3576
 ./sample_data/model/camel_b-smooth.obj 3576 triangles
-# [info] vertex 2032 face 3576
 [mesh_1_num_of_vertices] 2032
 [mesh_1_num_of_faces] 3576
 ./sample_data/model/camel_b.obj 3576 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 67.7164
-[culling rate] 0.793345
+[bvh_build_cost] 96.188
 
 
 ########  calculation result  ########
 [first_travel_bound] 0.791273 - 2.30486
-[distance] 1.12282 - 1.13327
+[distance] 1.12282 - 1.13333
 [max_point] 3.59225 36.9582 -6.85528
-[mean_distance] 1.12805
+[mean_distance] 1.12807
 
 
 ########  performance summary  ########
-[first_travel_cost] 19.9597
-[reduce_bound_cost] 3.06563
-[total_cost] 23.0254
+[first_travel_cost] 79.9212
+[reduce_bound_cost] 18.9909
+[total_cost] 98.9121
 [voronoi_count] 0
-[mid_subdivide_count] 589
-[total_subdivision_count] 589
-[point_triangle_distance_count] 127795
+[mid_subdivide_count] 588
+[total_subdivision_count] 588
+[point_triangle_distance_count] 135432
 [triangle_triangle_distance_count] 0
 
 

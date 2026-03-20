@@ -1,32 +1,31 @@
-# [info] vertex 2244 face 4288
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 2244
 [mesh_0_num_of_faces] 4288
 ./sample_data/model/inspired_mesh-smooth.obj 4288 triangles
-# [info] vertex 2244 face 4288
 [mesh_1_num_of_vertices] 2244
 [mesh_1_num_of_faces] 4288
 ./sample_data/model/inspired_mesh.obj 4288 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 65.1072
-[culling rate] 0.594683
+[bvh_build_cost] 145.917
 
 
 ########  calculation result  ########
 [first_travel_bound] 0.0185456 - 0.0390541
-[distance] 0.0197254 - 0.0199205
+[distance] 0.0197254 - 0.0199222
 [max_point] 22.5852 3.00468 5.2327
-[mean_distance] 0.019823
+[mean_distance] 0.0198238
 
 
 ########  performance summary  ########
-[first_travel_cost] 14.7556
-[reduce_bound_cost] 241.54
-[total_cost] 256.295
+[first_travel_cost] 99.9956
+[reduce_bound_cost] 2343.37
+[total_cost] 2443.36
 [voronoi_count] 0
-[mid_subdivide_count] 95446
-[total_subdivision_count] 95446
-[point_triangle_distance_count] 2031602
+[mid_subdivide_count] 96134
+[total_subdivision_count] 96134
+[point_triangle_distance_count] 2029240
 [triangle_triangle_distance_count] 0
 
 

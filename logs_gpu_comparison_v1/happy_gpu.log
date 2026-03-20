@@ -8,7 +8,7 @@
 ./sample_data/model/happy.obj 98601 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 313.412
+[bvh_build_cost] 330.933
 [culling rate] 0.998053
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 608.36
-[reduce_bound_cost] 1.36638
-[total_cost] 609.726
+[first_travel_cost] 614.186
+[reduce_bound_cost] 1.40292
+[total_cost] 615.589
 [voronoi_count] 0
 [mid_subdivide_count] 181
 [total_subdivision_count] 181

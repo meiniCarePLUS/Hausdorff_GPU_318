@@ -8,7 +8,7 @@
 ./sample_data/model/homer.obj 12000 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 84.7443
+[bvh_build_cost] 86.1862
 [culling rate] 0.998333
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 69.7298
-[reduce_bound_cost] 0.027293
-[total_cost] 69.7571
+[first_travel_cost] 70.1435
+[reduce_bound_cost] 0.037492
+[total_cost] 70.181
 [voronoi_count] 0
 [mid_subdivide_count] 0
 [total_subdivision_count] 0

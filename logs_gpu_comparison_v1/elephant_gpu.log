@@ -8,7 +8,7 @@
 ./sample_data/model/elephant.obj 12064 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 88.0063
+[bvh_build_cost] 87.7212
 [culling rate] 0.754227
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 59.0451
-[reduce_bound_cost] 17.1751
-[total_cost] 76.2202
+[first_travel_cost] 59.277
+[reduce_bound_cost] 17.4814
+[total_cost] 76.7583
 [voronoi_count] 0
 [mid_subdivide_count] 3881
 [total_subdivision_count] 3881

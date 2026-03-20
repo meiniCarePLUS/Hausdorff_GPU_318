@@ -8,7 +8,7 @@
 ./sample_data/model/horse.obj 96966 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 305.257
+[bvh_build_cost] 317.407
 [culling rate] 0.99671
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 423.032
-[reduce_bound_cost] 1.23864
-[total_cost] 424.27
+[first_travel_cost] 427.012
+[reduce_bound_cost] 1.21438
+[total_cost] 428.226
 [voronoi_count] 0
 [mid_subdivide_count] 213
 [total_subdivision_count] 213

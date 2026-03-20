@@ -1,15 +1,14 @@
-# [info] vertex 2956 face 4770
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 2956
 [mesh_0_num_of_faces] 4770
 ./sample_data/model/truck-smooth.obj 4770 triangles
-# [info] vertex 2956 face 4770
 [mesh_1_num_of_vertices] 2956
 [mesh_1_num_of_faces] 4770
 ./sample_data/model/truck.obj 4770 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 70.3734
-[culling rate] 0.969602
+[bvh_build_cost] 152.549
 
 
 ########  calculation result  ########
@@ -20,13 +19,13 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 37.8522
-[reduce_bound_cost] 5.6433
-[total_cost] 43.4955
+[first_travel_cost] 180.355
+[reduce_bound_cost] 13.9503
+[total_cost] 194.306
 [voronoi_count] 0
 [mid_subdivide_count] 283
 [total_subdivision_count] 283
-[point_triangle_distance_count] 142974
+[point_triangle_distance_count] 239175
 [triangle_triangle_distance_count] 0
 
 

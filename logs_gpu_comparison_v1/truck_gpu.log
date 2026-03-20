@@ -8,7 +8,7 @@
 ./sample_data/model/truck.obj 4770 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 70.3734
+[bvh_build_cost] 68.7375
 [culling rate] 0.969602
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 37.8522
-[reduce_bound_cost] 5.6433
-[total_cost] 43.4955
+[first_travel_cost] 38.2819
+[reduce_bound_cost] 5.80909
+[total_cost] 44.091
 [voronoi_count] 0
 [mid_subdivide_count] 283
 [total_subdivision_count] 283

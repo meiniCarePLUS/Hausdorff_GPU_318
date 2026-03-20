@@ -8,7 +8,7 @@
 ./sample_data/model/arm.obj 16618 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 113.286
+[bvh_build_cost] 120.605
 [culling rate] 0.909917
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 79.0388
-[reduce_bound_cost] 9.23955
-[total_cost] 88.2783
+[first_travel_cost] 79.7325
+[reduce_bound_cost] 9.29047
+[total_cost] 89.023
 [voronoi_count] 0
 [mid_subdivide_count] 2225
 [total_subdivision_count] 2225

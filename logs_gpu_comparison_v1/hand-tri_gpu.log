@@ -8,7 +8,7 @@
 ./sample_data/model/hand-tri.obj 3426 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 71.4906
+[bvh_build_cost] 69.4821
 [culling rate] 0.987741
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 19.3473
-[reduce_bound_cost] 0.439262
-[total_cost] 19.7866
+[first_travel_cost] 19.3628
+[reduce_bound_cost] 0.454154
+[total_cost] 19.817
 [voronoi_count] 0
 [mid_subdivide_count] 88
 [total_subdivision_count] 88

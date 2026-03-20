@@ -1,32 +1,31 @@
-# [info] vertex 49251 face 98601
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 49251
 [mesh_0_num_of_faces] 98601
 ./sample_data/model/happy-smooth.obj 98601 triangles
-# [info] vertex 49251 face 98601
 [mesh_1_num_of_vertices] 49251
 [mesh_1_num_of_faces] 98601
 ./sample_data/model/happy.obj 98601 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 313.412
-[culling rate] 0.998053
+[bvh_build_cost] 3384.26
 
 
 ########  calculation result  ########
 [first_travel_bound] 0.000637658 - 0.00126532
-[distance] 0.000685561 - 0.000688367
+[distance] 0.000685561 - 0.000691173
 [max_point] 0.0225177 0.129335 -0.00785804
-[mean_distance] 0.000686964
+[mean_distance] 0.000688367
 
 
 ########  performance summary  ########
-[first_travel_cost] 608.36
-[reduce_bound_cost] 1.36638
-[total_cost] 609.726
+[first_travel_cost] 1763.38
+[reduce_bound_cost] 6.16253
+[total_cost] 1769.55
 [voronoi_count] 0
-[mid_subdivide_count] 181
-[total_subdivision_count] 181
-[point_triangle_distance_count] 2996842
+[mid_subdivide_count] 163
+[total_subdivision_count] 163
+[point_triangle_distance_count] 2922208
 [triangle_triangle_distance_count] 0
 
 

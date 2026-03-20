@@ -1,35 +1,34 @@
-# [info] vertex 6002 face 12000
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 6002
 [mesh_0_num_of_faces] 12000
 ./sample_data/model/homer-smooth.obj 12000 triangles
-# [info] vertex 6002 face 12000
 [mesh_1_num_of_vertices] 6002
 [mesh_1_num_of_faces] 12000
 ./sample_data/model/homer.obj 12000 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 84.7443
-[culling rate] 0.998333
+[bvh_build_cost] 338.218
 
 
 ########  calculation result  ########
 [first_travel_bound] 0.00461967 - 0.00570575
-[distance] 0.00461967 - 0.00461967
-[max_point] 0.539229 0.751266 0.545473
-[mean_distance] 0.00461967
+[distance] 0.00479687 - 0.00482933
+[max_point] 0.538983 0.75137 0.545408
+[mean_distance] 0.0048131
 
 
 ########  performance summary  ########
-[first_travel_cost] 69.7298
-[reduce_bound_cost] 0.027293
-[total_cost] 69.7571
+[first_travel_cost] 239.538
+[reduce_bound_cost] 2.87784
+[total_cost] 242.416
 [voronoi_count] 0
-[mid_subdivide_count] 0
-[total_subdivision_count] 0
-[point_triangle_distance_count] 358152
+[mid_subdivide_count] 59
+[total_subdivision_count] 59
+[point_triangle_distance_count] 378143
 [triangle_triangle_distance_count] 0
 
 
 ########  reverse check  ########
-[reverse_check_result] 0.00461967
-[reverse_check_primitive_id] 3390
+[reverse_check_result] 0.00479687
+[reverse_check_primitive_id] 4768

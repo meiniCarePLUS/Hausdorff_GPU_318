@@ -8,7 +8,7 @@
 ./sample_data/model/camel_b.obj 3576 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 67.7164
+[bvh_build_cost] 72.2685
 [culling rate] 0.793345
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 19.9597
-[reduce_bound_cost] 3.06563
-[total_cost] 23.0254
+[first_travel_cost] 19.9929
+[reduce_bound_cost] 3.07016
+[total_cost] 23.0631
 [voronoi_count] 0
 [mid_subdivide_count] 589
 [total_subdivision_count] 589

@@ -1,15 +1,14 @@
-# [info] vertex 1250 face 2496
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 1250
 [mesh_0_num_of_faces] 2496
 ./sample_data/model/bumpy-smooth.obj 2496 triangles
-# [info] vertex 1250 face 2496
 [mesh_1_num_of_vertices] 1250
 [mesh_1_num_of_faces] 2496
 ./sample_data/model/bumpy.obj 2496 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 68.4308
-[culling rate] 0.825321
+[bvh_build_cost] 66.0341
 
 
 ########  calculation result  ########
@@ -20,13 +19,13 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 9.42944
-[reduce_bound_cost] 8.00839
-[total_cost] 17.4378
+[first_travel_cost] 55.8869
+[reduce_bound_cost] 59.3941
+[total_cost] 115.281
 [voronoi_count] 0
-[mid_subdivide_count] 2304
-[total_subdivision_count] 2304
-[point_triangle_distance_count] 127985
+[mid_subdivide_count] 2307
+[total_subdivision_count] 2307
+[point_triangle_distance_count] 128699
 [triangle_triangle_distance_count] 0
 
 

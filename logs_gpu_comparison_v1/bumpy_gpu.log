@@ -8,7 +8,7 @@
 ./sample_data/model/bumpy.obj 2496 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 68.4308
+[bvh_build_cost] 69.6759
 [culling rate] 0.825321
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 9.42944
-[reduce_bound_cost] 8.00839
-[total_cost] 17.4378
+[first_travel_cost] 9.26275
+[reduce_bound_cost] 8.14725
+[total_cost] 17.41
 [voronoi_count] 0
 [mid_subdivide_count] 2304
 [total_subdivision_count] 2304

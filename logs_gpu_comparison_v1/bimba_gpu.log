@@ -8,7 +8,7 @@
 ./sample_data/model/bimba.obj 224906 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 653.063
+[bvh_build_cost] 724.503
 [culling rate] 0.999129
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 1170.27
-[reduce_bound_cost] 1.51518
-[total_cost] 1171.79
+[first_travel_cost] 1184.22
+[reduce_bound_cost] 1.53248
+[total_cost] 1185.75
 [voronoi_count] 0
 [mid_subdivide_count] 239
 [total_subdivision_count] 239

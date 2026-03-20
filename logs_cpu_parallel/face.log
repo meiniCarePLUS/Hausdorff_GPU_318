@@ -1,15 +1,14 @@
-# [info] vertex 25905 face 51712
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 25905
 [mesh_0_num_of_faces] 51712
 ./sample_data/model/face-smooth.obj 51712 triangles
-# [info] vertex 25905 face 51712
 [mesh_1_num_of_vertices] 25905
 [mesh_1_num_of_faces] 51712
 ./sample_data/model/face.obj 51712 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 186.112
-[culling rate] 0.784441
+[bvh_build_cost] 1624.35
 
 
 ########  calculation result  ########
@@ -20,13 +19,13 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 235.687
-[reduce_bound_cost] 406.21
-[total_cost] 641.897
+[first_travel_cost] 879.463
+[reduce_bound_cost] 768.968
+[total_cost] 1648.43
 [voronoi_count] 0
-[mid_subdivide_count] 98259
-[total_subdivision_count] 98259
-[point_triangle_distance_count] 3827286
+[mid_subdivide_count] 98603
+[total_subdivision_count] 98603
+[point_triangle_distance_count] 3808461
 [triangle_triangle_distance_count] 0
 
 

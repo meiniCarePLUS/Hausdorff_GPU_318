@@ -8,7 +8,7 @@
 ./sample_data/model/armadillo.obj 99976 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 315.563
+[bvh_build_cost] 340.027
 [culling rate] 0.99833
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 537.685
-[reduce_bound_cost] 0.880172
-[total_cost] 538.565
+[first_travel_cost] 544.667
+[reduce_bound_cost] 0.890811
+[total_cost] 545.558
 [voronoi_count] 0
 [mid_subdivide_count] 151
 [total_subdivision_count] 151

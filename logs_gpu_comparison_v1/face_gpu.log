@@ -8,7 +8,7 @@
 ./sample_data/model/face.obj 51712 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 186.112
+[bvh_build_cost] 193.051
 [culling rate] 0.784441
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 235.687
-[reduce_bound_cost] 406.21
-[total_cost] 641.897
+[first_travel_cost] 237.026
+[reduce_bound_cost] 408.422
+[total_cost] 645.448
 [voronoi_count] 0
 [mid_subdivide_count] 98259
 [total_subdivision_count] 98259

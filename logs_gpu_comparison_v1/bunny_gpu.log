@@ -8,7 +8,7 @@
 ./sample_data/model/bunny.obj 144046 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 471.44
+[bvh_build_cost] 486.599
 [culling rate] 0.998917
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 676.22
-[reduce_bound_cost] 0.477312
-[total_cost] 676.697
+[first_travel_cost] 685.78
+[reduce_bound_cost] 0.486667
+[total_cost] 686.266
 [voronoi_count] 0
 [mid_subdivide_count] 107
 [total_subdivision_count] 107

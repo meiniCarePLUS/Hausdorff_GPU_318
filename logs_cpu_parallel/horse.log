@@ -1,15 +1,14 @@
-# [info] vertex 48485 face 96966
+[num_threads] 8
+
 [mesh_0_num_of_vertices] 48485
 [mesh_0_num_of_faces] 96966
 ./sample_data/model/horse-smooth.obj 96966 triangles
-# [info] vertex 48485 face 96966
 [mesh_1_num_of_vertices] 48485
 [mesh_1_num_of_faces] 96966
 ./sample_data/model/horse.obj 96966 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 305.257
-[culling rate] 0.99671
+[bvh_build_cost] 3278.09
 
 
 ########  calculation result  ########
@@ -20,13 +19,13 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 423.032
-[reduce_bound_cost] 1.23864
-[total_cost] 424.27
+[first_travel_cost] 1210.2
+[reduce_bound_cost] 6.64137
+[total_cost] 1216.84
 [voronoi_count] 0
-[mid_subdivide_count] 213
-[total_subdivision_count] 213
-[point_triangle_distance_count] 2187580
+[mid_subdivide_count] 218
+[total_subdivision_count] 218
+[point_triangle_distance_count] 1915335
 [triangle_triangle_distance_count] 0
 
 

@@ -8,7 +8,7 @@
 ./sample_data/model/lilium.obj 6590 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 70.6591
+[bvh_build_cost] 74.8189
 [culling rate] 0.909105
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 24.8724
-[reduce_bound_cost] 5.28177
-[total_cost] 30.1542
+[first_travel_cost] 25.0743
+[reduce_bound_cost] 5.36636
+[total_cost] 30.4407
 [voronoi_count] 0
 [mid_subdivide_count] 1852
 [total_subdivision_count] 1852

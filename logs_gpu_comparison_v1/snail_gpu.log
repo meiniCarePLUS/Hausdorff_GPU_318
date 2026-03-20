@@ -8,7 +8,7 @@
 ./sample_data/model/snail.obj 1653 triangles
 [rel_error_bound] 0.01
 [stop_condition] rel
-[bvh_build_cost] 60.4888
+[bvh_build_cost] 59.7933
 [culling rate] 0.885057
 
 
@@ -20,9 +20,9 @@
 
 
 ########  performance summary  ########
-[first_travel_cost] 6.77866
-[reduce_bound_cost] 4.35121
-[total_cost] 11.1299
+[first_travel_cost] 6.75566
+[reduce_bound_cost] 4.40767
+[total_cost] 11.1633
 [voronoi_count] 0
 [mid_subdivide_count] 1456
 [total_subdivision_count] 1456
