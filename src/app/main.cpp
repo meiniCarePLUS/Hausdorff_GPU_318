@@ -29,7 +29,6 @@
 
 using namespace std;
 using namespace std::chrono;
-using namespace zjucad::matrix;
 
 LogLevel logs::_level = LogLevel::INFO;
 
@@ -65,16 +64,16 @@ int main(int argc, char **argv) // parse arguments and call Hausdorff
                                   result["modelB"].as<std::string>()};
     for (size_t m = 0; m < 2; ++m) {
         const bool status = !meshio::load_obj(mesh_names[m].c_str(), t[m], v[m]);
-        logs(cout) << "[mesh_" << m << "_num_of_vertices] " << v[m].size(2)
+        logs(cout) << "[mesh_" << m << "_num_of_vertices] " << v[m].cols()
                    << std::endl;
-        logs(cout) << "[mesh_" << m << "_num_of_faces] " << t[m].size(2)
+        logs(cout) << "[mesh_" << m << "_num_of_faces] " << t[m].cols()
                    << std::endl;
-        if (status == false || t[m].size(2) == 0 || t[m].size(1) != 3) {
+        if (status == false || t[m].cols() == 0 || t[m].rows() != 3) {
             logs(cout) << "[Error] " << mesh_names[m]
                        << " cannot be parsed or is with 0 face." << std::endl;
             exit(-1);
         }
-        logs(cout) << mesh_names[m] << " " << std::to_string(t[m].size(2))
+        logs(cout) << mesh_names[m] << " " << std::to_string(t[m].cols())
                    << " triangles" << std::endl;
     }
 
@@ -149,7 +148,7 @@ int main(int argc, char **argv) // parse arguments and call Hausdorff
 
     // Build GPU LBVH for mesh B (reuse tris[1] data already computed above).
     {
-        size_t nB = t[1].size(2);
+        size_t nB = static_cast<size_t>(t[1].cols());
         std::vector<double> b_verts(nB * 9);
         for (size_t ti = 0; ti < nB; ++ti)
             for (size_t vi = 0; vi < 3; ++vi)

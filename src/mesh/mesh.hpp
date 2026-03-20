@@ -39,7 +39,7 @@ public:
         int exist_id = is_subdivision_vertex_exist(parent_1, parent_2);
         if (exist_id == -1) {
             extra_v_.push_back(point);
-            size_t new_id = extra_v_.size() + (*v_).size(2) - 1;
+            size_t new_id = extra_v_.size() + static_cast<size_t>(v_->cols()) - 1;
             parent_child_map_.emplace(edge_t(parent_1, parent_2), new_id);
             return new_id;
         } else {
@@ -49,17 +49,17 @@ public:
 
     // get vertex coordinate by id
     point_t get_vertex(size_t id) {
-        if (id >= (v_->size(2) + extra_v_.size())) {
-            std::cerr << "id out of bound: " << id << ", limit: " << v_->size(2) + extra_v_.size() << std::endl;
+        if (id >= (static_cast<size_t>(v_->cols()) + extra_v_.size())) {
+            std::cerr << "id out of bound: " << id << ", limit: " << v_->cols() + extra_v_.size() << std::endl;
             exit(-1);
         }
 
-        if (id < v_->size(2)) {
-            return (*v_)(zjucad::matrix::colon(), id);
+        if (id < static_cast<size_t>(v_->cols())) {
+            return v_->col(static_cast<Eigen::Index>(id));
         }
 
-        if (id >= v_->size(2)) {
-            return extra_v_[id - v_->size(2)];
+        if (id >= static_cast<size_t>(v_->cols())) {
+            return extra_v_[id - static_cast<size_t>(v_->cols())];
         }
         throw std::logic_error("get_vertex: id is not in the range of v_");
     }

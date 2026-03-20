@@ -83,7 +83,7 @@ struct primitive_with_hd {
 class hd_trait {
 public:
     hd_trait(const tri_mesh &A, const std::vector<primitive_t> &tri_A,
-             const std::vector<primitive_t> &tri_B, std::shared_ptr<bvh> ref_bvh) : closest_cache_(ref_bvh, A.v_->size(2)), A_(A), tri_A_(tri_A), tri_B_(tri_B) {
+             const std::vector<primitive_t> &tri_B, std::shared_ptr<bvh> ref_bvh) : closest_cache_(ref_bvh, static_cast<size_t>(A.v_->cols())), A_(A), tri_A_(tri_A), tri_B_(tri_B) {
     }
 
     virtual double need_travel(const bvh &A, const bvh &B, double &L, double &H) = 0;

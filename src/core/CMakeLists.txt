@@ -15,4 +15,4 @@ file(GLOB zycgeo_core_source "${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp"
                              "${CMAKE_CURRENT_SOURCE_DIR}/util/*.cpp")
 
 add_library(zycgeo_core ${zycgeo_core_source})
-target_link_libraries(zycgeo_core zjucad::matrix)
+target_link_libraries(zycgeo_core PUBLIC Eigen3::Eigen)

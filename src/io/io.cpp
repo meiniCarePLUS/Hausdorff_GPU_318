@@ -24,12 +24,12 @@
 #include "igl/readOBJ.h"
 
 using namespace std;
-using namespace zjucad::matrix;
 
 namespace meshio {
 
 int load_obj(const char *filename, matrixst &faces, matrixd &nodes) {
-    Eigen::MatrixXd V, F;
+    Eigen::MatrixXd V;
+    Eigen::MatrixXi F;
     if (!igl::readOBJ(filename, V, F)) {
         return -1;
     }

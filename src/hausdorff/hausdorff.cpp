@@ -18,8 +18,6 @@
 #include <iostream>
 #include <limits>
 
-#include "zjucad/matrix/io.h"
-
 #include "bvh/nearest_query.h"
 #include "core/geometry/primitive_dis.hpp"
 #include "hausdorff.h"
@@ -29,7 +27,6 @@
 #include "mesh/adjacent_table.hpp"
 
 using namespace std;
-using namespace zjucad::matrix;
 using namespace std::chrono;
 
 void traverse(const bvh &A, const bvh &B, double &L, double &H, unique_ptr<hd_trait> &trait, point_t &max_point) {
@@ -87,21 +84,22 @@ void subdivide(tri_mesh &A,
                 primitive_t *t[2];
                 for (size_t point_iter = 0; point_iter < 2; ++point_iter) {
                     size_t point_id = (i + point_iter) % 3;
-                    t[point_iter] = cache.get(prim.point_id[point_id], prim.points(colon(), point_id));
+                    t[point_iter] = cache.get(static_cast<size_t>(prim.point_id[point_id]), prim.points.col(point_id));
                 }
                 auto edge_itr = adj_table.table_.find(primitive_pair(t[0]->id, t[1]->id));
                 if (edge_itr != adj_table.table_.cend()) {
                     voronoi_count++;
                     new_vertex[i] = voronoi_subdivide(
                         *t[0], *t[1],
-                        (*model_B.v_)(colon(), edge_itr->second.first), (*model_B.v_)(colon(), edge_itr->second.second),
-                        prim.points(colon(), i), prim.points(colon(), (i + 1) % 3));
+                        model_B.v_->col(static_cast<Eigen::Index>(edge_itr->second.first)),
+                        model_B.v_->col(static_cast<Eigen::Index>(edge_itr->second.second)),
+                        prim.points.col(i), prim.points.col((i + 1) % 3));
                     voronoi_valid = true;
                 }
             }
             if (!voronoi_valid) {
                 mid_count++;
-                new_vertex[i] = (prim.points(colon(), i) + prim.points(colon(), (i + 1) % 3)) / 2;
+                new_vertex[i] = (prim.points.col(i) + prim.points.col((i + 1) % 3)) / 2.0;
             }
             new_vertex_id[i] = A.add_subdivision_vertex(prim.point_id[i], prim.point_id[(i + 1) % 3], new_vertex[i]);
             // update closest cache
@@ -110,9 +108,9 @@ void subdivide(tri_mesh &A,
     }
 
     for (size_t i = 0; i < 3; ++i) {
-        result[i].points(colon(), 1) = new_vertex[i];
-        result[i].points(colon(), 0) = prim.points(colon(), i);
-        result[i].points(colon(), 2) = new_vertex[(i + 2) % 3];
+        result[i].points.col(1) = new_vertex[i];
+        result[i].points.col(0) = prim.points.col(i);
+        result[i].points.col(2) = new_vertex[(i + 2) % 3];
         result[i].point_id[0] = prim.point_id[i];
         result[i].point_id[1] = new_vertex_id[i];
         result[i].point_id[2] = new_vertex_id[(i + 2) % 3];
@@ -120,8 +118,8 @@ void subdivide(tri_mesh &A,
     }
 
     for (size_t d = 0; d < 3; ++d) {
-        result[3].points(colon(), d) = new_vertex[d];
-        result[3].point_id(d, 0) = new_vertex_id[d];
+        result[3].points.col(static_cast<Eigen::Index>(d)) = new_vertex[d];
+        result[3].point_id[static_cast<Eigen::Index>(d)] = static_cast<int>(new_vertex_id[d]);
         result[3].id = prim.id;
     }
 }
@@ -137,7 +135,7 @@ hausdorff_result hausdorff(tri_mesh &A, const tri_mesh &B,
     high_resolution_clock::time_point begin_clock = high_resolution_clock::now();
     double L = 0, U = std::numeric_limits<double>::max();
 
-    point_t max_point = ones<double>(3, 1);
+    point_t max_point = point_t::Ones();
     traverse(*pbvh[0], *pbvh[1], L, U, trait, max_point);
 
     // TODO: design a class for more convinient time measure: void
@@ -157,7 +155,7 @@ hausdorff_result hausdorff(tri_mesh &A, const tri_mesh &B,
     // vector<double> new_edge; vector<size_t> edge_index;
 
     // while( ((!use_relative_error && (sqrt(U)-sqrt(L) > error)) || (use_relative_error && ((sqrt(U)-sqrt(L)) >= (sqrt(U)+sqrt(L))/2 * 0.01)))
-    logs(cout) << "[culling rate] " << 1 - (trait->left_tris.size() * 1.0 / A.t_->size(2)) << std::endl;
+    logs(cout) << "[culling rate] " << 1 - (trait->left_tris.size() * 1.0 / A.t_->cols()) << std::endl;
 
     // Batch size: process up to BATCH triangles per GPU round-trip.
     // Larger batches amortize kernel launch overhead; smaller batches preserve
@@ -255,9 +253,9 @@ double hausdorff(const bvh &node, const point_t &p) {
             // aabb node
             point_t mid_point = pt->mid();
             point_t max_vector = p - mid_point;
-            point_t mid_corner_vector = mid_point - pt->get_minmax()(colon(), 0);
-            for (size_t d = 0; d < p.size(1); ++d) {
-                max_vector(d, 0) = fabs(max_vector(d, 0)) + fabs(mid_corner_vector(d, 0));
+            point_t mid_corner_vector = mid_point - pt->get_minmax().col(0);
+            for (Eigen::Index d = 0; d < p.size(); ++d) {
+                max_vector(d) = fabs(max_vector(d)) + fabs(mid_corner_vector(d));
             }
             return dot(max_vector, max_vector); //max_vector(0, 0) * max_vector(0, 0) + max_vector(1, 0) * max_vector(1, 0) + max_vector(2, 0) * max_vector(2, 0);
         }

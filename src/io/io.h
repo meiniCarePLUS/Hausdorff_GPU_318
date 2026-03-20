@@ -16,14 +16,14 @@
 #define MESH_IO_H
 
 #include <deque>
+#include <Eigen/Dense>
 #include <fstream>
 #include <iostream>
-#include <zjucad/matrix/matrix.h>
 
 namespace meshio {
 
-typedef zjucad::matrix::matrix<double> matrixd;
-typedef zjucad::matrix::matrix<size_t> matrixst;
+typedef Eigen::MatrixXd matrixd;
+typedef Eigen::MatrixXi matrixst;
 
 ///
 /// @brief load_obj, it only support pure triangle/quad mesh

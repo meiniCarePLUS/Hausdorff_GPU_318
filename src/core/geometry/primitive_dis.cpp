@@ -31,7 +31,6 @@ inline bool operator==(const point_t &p1, const point_t &p2) {
 }
 
 using namespace std;
-using namespace zjucad::matrix;
 const size_t N = 3;
 const double epsilon = 1e-20;
 
@@ -174,14 +173,13 @@ double segment_segment_sqr_dis(const point_t &p1, const point_t &q1, const point
 double point_primitive_sqr_dis(const point_t &point, const primitive_t *prim, point_t &closest_point) {
     ++point_triangle_count;
     // check point dim
-    assert(point.size(1) == prim->points.size(1));
-    assert(prim->points.size(2) == 3);
-    assert(point.size(2) == 1);
+    assert(point.size() == prim->points.rows());
+    assert(prim->points.cols() == 3);
     // TODO: make this large lambda as a normal inline function.
     const auto &point_primitive_closest_point = [](const point_t &point, const primitive_t *prim, point_t &barypoint) -> void {
-        barypoint = zeros<double>(3, 1);
+        barypoint.setZero();
 
-        point_t ab(N), ac(N), ap(N);
+        point_t ab, ac, ap;
         for (size_t i = 0; i < N; ++i) {
             ab[i] = prim->points(i, 1) - prim->points(i, 0);
             ac[i] = prim->points(i, 2) - prim->points(i, 0);
@@ -259,13 +257,13 @@ double primitive_primitive_sqr_dis(const primitive_t &prim1, const primitive_t &
     double min_sqr_dis = std::numeric_limits<double>::max();
     bool shown_disjoint = false;
 
-    point_t closest_p = ones<double>(3, 1), closest_q = ones<double>(3, 1), vec = ones<double>(3, 1);
+    point_t closest_p = point_t::Ones(), closest_q = point_t::Ones(), vec = point_t::Ones();
     for (size_t edge_iter1 = 0; edge_iter1 < 3; ++edge_iter1) {
         for (size_t edge_iter2 = 0; edge_iter2 < 3; ++edge_iter2) {
-            segment_segment_sqr_dis(prim1.points(colon(), edge_iter1),
-                                    prim1.points(colon(), (edge_iter1 + 1) % 3),
-                                    prim2.points(colon(), edge_iter2),
-                                    prim2.points(colon(), (edge_iter2 + 1) % 3),
+            segment_segment_sqr_dis(prim1.points.col(edge_iter1),
+                                    prim1.points.col((edge_iter1 + 1) % 3),
+                                    prim2.points.col(edge_iter2),
+                                    prim2.points.col((edge_iter2 + 1) % 3),
                                     closest_p, closest_q,
                                     vec);
             point_t v = closest_q - closest_p;
@@ -275,10 +273,10 @@ double primitive_primitive_sqr_dis(const primitive_t &prim1, const primitive_t &
                 min_sqr_dis = sqr_dis;
                 // check whether current edge pair is the closest points air
                 point_t closest_pair = vec;
-                point_t e = prim1.points(colon(), (edge_iter1 + 2) % 3) - closest_p;
+                point_t e = prim1.points.col((edge_iter1 + 2) % 3) - closest_p;
 
                 double a = dot3(e, closest_pair);
-                e = prim2.points(colon(), (edge_iter2 + 2) % 3) - closest_q;
+                e = prim2.points.col((edge_iter2 + 2) % 3) - closest_q;
                 double b = dot3(e, closest_pair);
                 // disjoint, just return
                 if ((a <= 0) && (b >= 0)) {
@@ -306,31 +304,35 @@ double primitive_primitive_sqr_dis(const primitive_t &prim1, const primitive_t &
     const primitive_t *prim[2] = {&prim1, &prim2};
 
     for (size_t i = 0; i < 2; ++i) {
-        point_t normal_s = cross(prim[i]->points(colon(), 1) - prim[i]->points(colon(), 0),
-                                 prim[i]->points(colon(), 2) - prim[i]->points(colon(), 1));
+        point_t normal_s = (prim[i]->points.col(1) - prim[i]->points.col(0)).cross(
+            prim[i]->points.col(2) - prim[i]->points.col(1));
         double normal_l = dot3(normal_s, normal_s);
         if (normal_l > 1e-15) {
-            point_t project = ones<double>(3, 1),
-                    temp = ones<double>(3, 1),
-                    z = ones<double>(3, 1);
+            point_t project = point_t::Ones(),
+                    temp = point_t::Ones(),
+                    z = point_t::Ones();
             for (size_t j = 0; j < 3; ++j) {
-                temp = prim[i]->points(colon(), 0) - prim[(i + 1) % 2]->points(colon(), j);
-                project(j, 0) = dot3(temp, normal_s);
+                temp = prim[i]->points.col(0) - prim[(i + 1) % 2]->points.col(j);
+                project(j) = dot3(temp, normal_s);
             }
 
             int point = -1;
-            if ((project(0, 0) > 0) && (project(1, 0) > 0) && (project(2, 0) > 0)) {
-                point = min_element(project.begin(), project.end()) - project.begin();
-            } else if ((project(0, 0) < 0) && (project(1, 0) < 0) && (project(2, 0) < 0)) {
-                point = max_element(project.begin(), project.end()) - project.begin();
+            if ((project(0) > 0) && (project(1) > 0) && (project(2) > 0)) {
+                Eigen::Index min_index = 0;
+                project.minCoeff(&min_index);
+                point = static_cast<int>(min_index);
+            } else if ((project(0) < 0) && (project(1) < 0) && (project(2) < 0)) {
+                Eigen::Index max_index = 0;
+                project.maxCoeff(&max_index);
+                point = static_cast<int>(max_index);
             }
 
             if (point >= 0) {
                 shown_disjoint = 1;
                 bool is_in = true;
                 for (size_t j = 0; j < 3; ++j) {
-                    temp = prim[(i + 1) % 2]->points(colon(), point) - prim[i]->points(colon(), j);
-                    z = cross(normal_s, prim[i]->points(colon(), (j + 1) % 3) - prim[i]->points(colon(), j));
+                    temp = prim[(i + 1) % 2]->points.col(point) - prim[i]->points.col(j);
+                    z = normal_s.cross(prim[i]->points.col((j + 1) % 3) - prim[i]->points.col(j));
                     if (dot3(temp, z) <= 0) {
                         is_in = false;
                         break;
@@ -338,7 +340,7 @@ double primitive_primitive_sqr_dis(const primitive_t &prim1, const primitive_t &
                 }
 
                 if (is_in) {
-                    point_t l = normal_s * (project(point, 0) / normal_l);
+                    point_t l = normal_s * (project(point) / normal_l);
                     return dot3(l, l);
                 }
             }

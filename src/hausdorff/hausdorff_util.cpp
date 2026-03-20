@@ -20,15 +20,14 @@
 #include "hausdorff_internal.h"
 
 using namespace std;
-using namespace zjucad::matrix;
 
 // subdivide given edge by voronoi split
 point_t voronoi_subdivide(const primitive_t &t1, const primitive_t &t2,
                           const point_t &e1, const point_t &e2,
                           const point_t &p1, const point_t &p2) {
     point_t edge = e1 - e2;
-    point_t normal1 = cross((t1.points(colon(), 2) - t1.points(colon(), 0)), (t1.points(colon(), 1) - t1.points(colon(), 0)));
-    point_t normal2 = cross((t2.points(colon(), 2) - t2.points(colon(), 0)), (t2.points(colon(), 1) - t2.points(colon(), 0)));
+    point_t normal1 = cross(t1.points.col(2) - t1.points.col(0), t1.points.col(1) - t1.points.col(0));
+    point_t normal2 = cross(t2.points.col(2) - t2.points.col(0), t2.points.col(1) - t2.points.col(0));
 
     if (dot(normal1, normal2) < 0) {
         normal2 = -normal2;

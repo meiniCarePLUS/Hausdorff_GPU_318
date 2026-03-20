@@ -15,8 +15,6 @@
 #include <memory>
 #include <numeric>
 
-#include <zjucad/matrix/io.h>
-
 #include "core/common/n_matrix.h"
 #include "core/geometry/bbox.hpp"
 #include "core/geometry/primitive_dis.hpp"
@@ -24,7 +22,6 @@
 #include "bvh.h"
 
 using namespace std;
-using namespace zjucad::matrix;
 
 bvh::bvh() {
     children_[0] = 0;
@@ -100,7 +97,7 @@ void bvh::travel(bvh_travel_trait *trait) const {
 
 void bvh::compute_nearest_to(const point_t &p, nearest &n) const {
     // only one point
-    assert(p.size(1) == 3 && p.size(2) == 1);
+    assert(p.size() == 3);
     // leaf node of non leaf node check
     assert(primitive_ != 0 || (children_[0] != 0 && children_[1] != 0));
 

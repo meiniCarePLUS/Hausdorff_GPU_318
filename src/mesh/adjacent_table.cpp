@@ -14,17 +14,15 @@
 
 #include "adjacent_table.hpp"
 
-using namespace zjucad::matrix;
-
 bool get_neighbor_edge(const matrixst_t &prims, size_t p1, size_t p2, edge_t &e) {
     size_t point_count = 0;
-    for (size_t vi = 0; vi < prims.size(1); ++vi) {
-        for (size_t vj = 0; vj < prims.size(1); ++vj) {
-            if (prims(vi, p1) == prims(vj, p2)) {
+    for (Eigen::Index vi = 0; vi < prims.rows(); ++vi) {
+        for (Eigen::Index vj = 0; vj < prims.rows(); ++vj) {
+            if (prims(vi, static_cast<Eigen::Index>(p1)) == prims(vj, static_cast<Eigen::Index>(p2))) {
                 if (point_count == 0) {
-                    e.first = prims(vi, p1);
+                    e.first = static_cast<size_t>(prims(vi, static_cast<Eigen::Index>(p1)));
                 } else if (point_count == 1) {
-                    e.second = prims(vi, p1);
+                    e.second = static_cast<size_t>(prims(vi, static_cast<Eigen::Index>(p1)));
                 } else {
                     return false;
                 }
@@ -41,10 +39,10 @@ bool get_neighbor_edge(const matrixst_t &prims, size_t p1, size_t p2, edge_t &e)
 
 void build_primitive_adjacent_table_from_mesh(const matrixd_t &v, const matrixst_t &prims, primitive_adjacent_table &table) {
     // build vertex-primitives map
-    std::vector<std::vector<size_t>> vpmap(v.size(2));
-    for (size_t pi = 0; pi < prims.size(2); ++pi) {
-        for (size_t vi = 0; vi < prims.size(1); ++vi) {
-            vpmap[prims(vi, pi)].push_back(pi);
+    std::vector<std::vector<size_t>> vpmap(static_cast<size_t>(v.cols()));
+    for (Eigen::Index pi = 0; pi < prims.cols(); ++pi) {
+        for (Eigen::Index vi = 0; vi < prims.rows(); ++vi) {
+            vpmap[static_cast<size_t>(prims(vi, pi))].push_back(static_cast<size_t>(pi));
         }
     }
 

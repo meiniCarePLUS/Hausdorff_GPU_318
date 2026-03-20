@@ -43,12 +43,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 CPMAddPackage(
-  NAME zjucad.matrix
-  GITHUB_REPOSITORY ZJUCADGeoSim/matrix
-  GIT_TAG v0.1.0
-)
-
-CPMAddPackage(
   NAME cxxopts
   GITHUB_REPOSITORY jarro2783/cxxopts
   GIT_TAG v2.2.1

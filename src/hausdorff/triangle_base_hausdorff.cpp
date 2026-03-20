@@ -19,15 +19,12 @@
 #include <typeinfo>
 #include <vector>
 
-#include <zjucad/matrix/matrix.h>
-
 #include "core/common/conf.h"
 #include "core/geometry/primitive_dis.hpp"
 #include "hausdorff/face_base_travel_trait.hpp"
 #include "hausdorff/hausdorff.h"
 #include "hausdorff/hausdorff_internal.h"
 
-using namespace zjucad::matrix;
 using namespace std;
 
 // utility function, used to deal with vector iterator and pure pointer
@@ -71,8 +68,7 @@ void triangle_base_trait::shrink_bound(const primitive_t &primitive, const primi
     }
     std::unordered_map<size_t, vector<primitive_t *>>::iterator iter = L_set.find(primitive.id);
 
-    point_t temp_vec = ones<double>(3, 1);
-    temp_vec(0, 0) = temp_vec(1, 0) = temp_vec(2, 0) = std::numeric_limits<double>::max();
+    point_t temp_vec = point_t::Constant(std::numeric_limits<double>::max());
 
     double local_U = std::numeric_limits<double>::max(), local_L = 0;
 
@@ -80,8 +76,9 @@ void triangle_base_trait::shrink_bound(const primitive_t &primitive, const primi
     iterate_leaf_inner(primitive, iter->second.begin(), iter->second.end(), local_L, local_U, temp_vec);
     if (local_L > L) {
         L = local_L;
-        size_t max_point_iter = max_element(temp_vec.begin(), temp_vec.end()) - temp_vec.begin();
-        max_point = primitive.points(colon(), max_point_iter);
+        Eigen::Index max_point_iter = 0;
+        temp_vec.maxCoeff(&max_point_iter);
+        max_point = primitive.points.col(max_point_iter);
     }
 
     L = max(L, local_L);
@@ -98,30 +95,29 @@ void triangle_base_trait::iterate_leaf_inner(const primitive_t &primitive, itera
     // calculate the hausdorff distance with every primitive
     // calculate distance matrix
     size_t size = end - beg;
-    matrixd_t dis_matrix = ones<double>(primitive.points.size(2), size);
-    for (size_t point_iter = 0; point_iter != primitive.points.size(2); ++point_iter) {
+    matrixd_t dis_matrix = matrixd_t::Ones(primitive.points.cols(), static_cast<Eigen::Index>(size));
+    for (Eigen::Index point_iter = 0; point_iter != primitive.points.cols(); ++point_iter) {
         for (auto primitive_iter = beg; primitive_iter != end; ++primitive_iter) {
-            dis_matrix(point_iter, primitive_iter - beg) = point_primitive_sqr_dis(primitive.points(colon(), point_iter), get_primitive(primitive_iter));
+            dis_matrix(point_iter, primitive_iter - beg) = point_primitive_sqr_dis(primitive.points.col(point_iter), get_primitive(primitive_iter));
         }
     }
 
     // update upper bound
-    for (size_t primitive_iter = 0; primitive_iter != dis_matrix.size(2); ++primitive_iter) {
-        local_U = min(max(dis_matrix(colon(), primitive_iter)), local_U);
+    for (Eigen::Index primitive_iter = 0; primitive_iter != dis_matrix.cols(); ++primitive_iter) {
+        local_U = min(dis_matrix.col(primitive_iter).maxCoeff(), local_U);
     }
 
     // update lower bound
-    for (size_t point_iter = 0; point_iter != dis_matrix.size(1); ++point_iter) {
-        temp_vec(point_iter, 0) = min(temp_vec(point_iter, 0), min(dis_matrix(point_iter, colon())));
+    for (Eigen::Index point_iter = 0; point_iter != dis_matrix.rows(); ++point_iter) {
+        temp_vec(point_iter) = min(temp_vec(point_iter), dis_matrix.row(point_iter).minCoeff());
     }
-    local_L = max(temp_vec);
+    local_L = temp_vec.maxCoeff();
 }
 
 // iterate leaf node
 // wrapper
 void triangle_base_trait::iterate_leaf(const primitive_t &primitive, const bvh &B, double &L, double &U, point_t &max_point) {
-    point_t temp_vec = ones<double>(3, 1);
-    temp_vec(0, 0) = temp_vec(1, 0) = temp_vec(2, 0) = std::numeric_limits<double>::max();
+    point_t temp_vec = point_t::Constant(std::numeric_limits<double>::max());
 
     double local_U = std::numeric_limits<double>::max(), local_L = 0;
 
@@ -135,8 +131,9 @@ void triangle_base_trait::iterate_leaf(const primitive_t &primitive, const bvh &
 
     if (local_L > L) {
         L = local_L;
-        size_t max_point_iter = max_element(temp_vec.begin(), temp_vec.end()) - temp_vec.begin();
-        max_point = primitive.points(colon(), max_point_iter);
+        Eigen::Index max_point_iter = 0;
+        temp_vec.maxCoeff(&max_point_iter);
+        max_point = primitive.points.col(max_point_iter);
     }
 
     // maintain the priority heap

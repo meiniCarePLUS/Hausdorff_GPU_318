@@ -1,7 +1,7 @@
 /*
 	State Key Lab of CAD&CG Zhejiang Unv.
 
-	Author: 
+	Author:
           Yicun Zheng (3130104113@zju.edu.cn)
           Haoran Sun (hrsun@zju.edu.cn)
           Jin Huang (hj@cad.zju.edu.cn)
@@ -15,37 +15,40 @@
 #ifndef _BDH_CONF_H_
 #define _BDH_CONF_H_
 
-// TODO: one can also use Eigen.  I am just more familar with this
-// matrix lib.
-
 #include <limits>
 #include <memory>
 #include <utility>
 
-#include <zjucad/matrix/io.h>
-#include <zjucad/matrix/matrix.h>
+#include <cstddef>
+
+#include <Eigen/Dense>
 
 #include "log_helper.h"
-#include "n_matrix.h"
 
-typedef zjucad::matrix::matrix<double> matrixd_t;
-typedef zjucad::matrix::matrix<size_t> matrixst_t;
-typedef zjucad::matrix::n_matrix<double, 3> point_t;
-typedef zjucad::matrix::n_matrix<double, 12> rectangle_t;
+// Matrix types using Eigen
+typedef Eigen::MatrixXd matrixd_t;
+typedef Eigen::MatrixXi matrixst_t;  // size_t indices stored as int
+typedef Eigen::Vector3d point_t;
 typedef std::pair<size_t, size_t> edge_t;
-// typedef matrixd_t point_t;
-// typedef matrixd_t primitive_t; // simplex: point, line, tri, tet
+
+inline Eigen::Index rows(const matrixd_t &m) { return m.rows(); }
+inline Eigen::Index cols(const matrixd_t &m) { return m.cols(); }
+inline Eigen::Index rows(const matrixst_t &m) { return m.rows(); }
+inline Eigen::Index cols(const matrixst_t &m) { return m.cols(); }
+inline point_t cross(const point_t &a, const point_t &b) { return a.cross(b); }
+inline double dot(const point_t &a, const point_t &b) { return a.dot(b); }
+inline double norm(const point_t &a) { return a.norm(); }
 
 struct tri_with_id {
-    zjucad::matrix::n_matrix<double, 9> points;
-    zjucad::matrix::n_matrix<size_t, 3> point_id;
+    Eigen::Matrix3d points;   // 3x3: each column is a vertex
+    Eigen::Vector3i point_id; // 3 vertex indices
     point_t barycenter;
     size_t id;
     tri_with_id() {
-        points = zjucad::matrix::zeros<double>(3, 3);
-        point_id = zjucad::matrix::zeros<double>(3, 1);
-        barycenter = zjucad::matrix::zeros<double>(3, 1);
-        id = -1;
+        points = Eigen::Matrix3d::Zero();
+        point_id = Eigen::Vector3i::Zero();
+        barycenter = point_t::Zero();
+        id = (size_t)-1;
     }
 };
 typedef tri_with_id primitive_t;
