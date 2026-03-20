@@ -32,7 +32,7 @@ bvh::bvh() {
 bvh::~bvh() {
 }
 
-void bvh::build_bvh(primitive_t *beg, primitive_t *end) {
+void bvh::build_bvh(iterator beg, iterator end) {
     if (!beg || !end || beg == end) { // invalid or null input
         cerr << beg << " " << end << endl;
         assert(0); // it is a logical error instead of a runtime error.
@@ -44,7 +44,7 @@ void bvh::build_bvh(primitive_t *beg, primitive_t *end) {
     left_primitive_ = beg;
     right_primitive_ = end;
     if (end - beg == 1) {
-        primitive_ = beg;
+        primitive_ = *beg;
         return;
     }
 
@@ -52,7 +52,7 @@ void bvh::build_bvh(primitive_t *beg, primitive_t *end) {
     //this->partition(beg, end);
     unique_ptr<pivot_t> p(pivot(beg, end));
     unique_ptr<sorter_t> s(sorter(beg, end));
-    primitive_t *m = 0;
+    iterator m = 0;
     if (!!p) {
         m = std::partition(beg, end, *p);
         if (m - beg == 0 || end - m == 0) {

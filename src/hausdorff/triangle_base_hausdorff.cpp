@@ -34,8 +34,8 @@ const primitive_t *get_primitive(iterator iter) {
 }
 
 template <>
-const primitive_t *get_primitive(primitive_t *iter) {
-    return iter;
+const primitive_t *get_primitive(primitive_t **iter) {
+    return *iter;
 }
 
 template <>

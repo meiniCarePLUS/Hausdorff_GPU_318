@@ -139,11 +139,16 @@ int main(int argc, char **argv) // parse arguments and call Hausdorff
     high_resolution_clock::time_point begin_clock = high_resolution_clock::now();
     tri_mesh meshes[2] = {A, B};
     vector<tri_with_id> tris[2];
+    vector<primitive_t *> tri_ptrs[2];
     shared_ptr<bvh> pbvh[2];
     for (size_t m = 0; m < 2; ++m) {
         pbvh[m].reset(create_bvh_node("aabb"));
         build_primitive_array(meshes[m], tris[m]);
-        pbvh[m]->build_bvh(&tris[m][0], &tris[m][0] + tris[m].size());
+        tri_ptrs[m].resize(tris[m].size());
+        for (size_t i = 0; i < tris[m].size(); ++i) {
+            tri_ptrs[m][i] = &tris[m][i];
+        }
+        pbvh[m]->build_bvh(tri_ptrs[m].data(), tri_ptrs[m].data() + tri_ptrs[m].size());
     }
 
     // Build GPU LBVH for mesh B (reuse tris[1] data already computed above).

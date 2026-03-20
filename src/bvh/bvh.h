@@ -48,16 +48,17 @@ class bvh_travel_trait;
 class bvh // indeed, a node in bvh, abstraction of a convex shape.
 {
 public:
-    typedef primitive_t *iterator;
+    typedef primitive_t **iterator;
+    typedef primitive_t *const *const_iterator;
     // hierarchy
     // future can use template for more general iterator
     bvh();
 
     // build bvh hierarchy tree on primitives in [beg, end)
-    void build_bvh(primitive_t *beg, primitive_t *end);
+    void build_bvh(iterator beg, iterator end);
 
     // initial bvh volume based on primitives in [beg, end)
-    virtual void init_bounding_volume(const primitive_t *beg, const primitive_t *end) = 0;
+    virtual void init_bounding_volume(const_iterator beg, const_iterator end) = 0;
 
     // create a node
     virtual std::shared_ptr<bvh> create_node() const = 0;
@@ -101,11 +102,11 @@ public:
         return right_primitive_ - left_primitive_;
     }
 
-    const iterator end() const {
+    const_iterator end() const {
         return right_primitive_;
     }
 
-    const iterator begin() const {
+    const_iterator begin() const {
         return left_primitive_ == nullptr ? end() : left_primitive_;
     }
 
@@ -127,24 +128,24 @@ protected:
     // two type of tree split method
     // pivot: use geometry center to split, can caused unbalanced tree
     // sorter: use median center to split, the result is a balanced tree
-    typedef std::function<bool(const primitive_t &)> pivot_t;
-    virtual pivot_t *pivot(primitive_t *beg, primitive_t *end) const { return 0; }
-    typedef std::function<bool(const primitive_t &, const primitive_t &)> sorter_t;
-    virtual sorter_t *sorter(primitive_t *beg, primitive_t *end) const { return 0; }
+    typedef std::function<bool(const primitive_t *)> pivot_t;
+    virtual pivot_t *pivot(iterator beg, iterator end) const { return 0; }
+    typedef std::function<bool(const primitive_t *, const primitive_t *)> sorter_t;
+    virtual sorter_t *sorter(iterator beg, iterator end) const { return 0; }
 
     // if both children are null, it is leaf in this case, and there are
     // non-null primitives.
     std::shared_ptr<bvh> children_[2];
     primitive_t *primitive_;
-    primitive_t *left_primitive_;
-    primitive_t *right_primitive_;
+    iterator left_primitive_;
+    iterator right_primitive_;
     // geometry mid point of bvh node
     point_t mid_;
 };
 
 class aabb : public bvh {
 public:
-    virtual void init_bounding_volume(const primitive_t *beg, const primitive_t *end);
+    virtual void init_bounding_volume(const_iterator beg, const_iterator end);
     virtual std::shared_ptr<bvh> create_node() const { return std::shared_ptr<bvh>(new aabb); }
     virtual bool intersect_to(const point_t &p) const;
     const minmax_t &get_minmax() const {
@@ -155,9 +156,9 @@ public:
 
 protected:
 #ifdef MEDIAN_PIVOT
-    virtual sorter_t *sorter(primitive_t *beg, primitive_t *end) const;
+    virtual sorter_t *sorter(iterator beg, iterator end) const;
 #else
-    virtual pivot_t *pivot(primitive_t *beg, primitive_t *end) const;
+    virtual pivot_t *pivot(iterator beg, iterator end) const;
 #endif
 
     // for aabb tree, we use the vertices of diagonal to represent the bounding volume

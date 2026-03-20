@@ -60,18 +60,19 @@ bool aabb::intersect_to(const point_t &p) const {
     return true;
 }
 
-void aabb::init_bounding_volume(const primitive_t *beg, const primitive_t *end) {
+void aabb::init_bounding_volume(const_iterator beg, const_iterator end) {
     minmax_.col(0).setConstant(std::numeric_limits<double>::max());
     minmax_.col(1).setConstant(-std::numeric_limits<double>::max());
 
     // iterate all vertices
     for (auto iter = beg; iter < end; ++iter) {
-        for (Eigen::Index pi = 0; pi < iter->points.cols(); ++pi) {
-            for (Eigen::Index di = 0; di < iter->points.rows(); ++di) {
-                if (minmax_(di, 0) > iter->points(di, pi))
-                    minmax_(di, 0) = iter->points(di, pi);
-                if (minmax_(di, 1) < iter->points(di, pi))
-                    minmax_(di, 1) = iter->points(di, pi);
+        const primitive_t &primitive = **iter;
+        for (Eigen::Index pi = 0; pi < primitive.points.cols(); ++pi) {
+            for (Eigen::Index di = 0; di < primitive.points.rows(); ++di) {
+                if (minmax_(di, 0) > primitive.points(di, pi))
+                    minmax_(di, 0) = primitive.points(di, pi);
+                if (minmax_(di, 1) < primitive.points(di, pi))
+                    minmax_(di, 1) = primitive.points(di, pi);
             }
         }
     }
@@ -81,23 +82,23 @@ void aabb::init_bounding_volume(const primitive_t *beg, const primitive_t *end) 
 }
 
 #ifdef MEDIAN_PIVOT
-bvh::sorter_t *aabb::sorter(primitive_t *beg, primitive_t *end) const { // does this realy binds to aabb?  Except for minmax_, it looks also generally applied.
+bvh::sorter_t *aabb::sorter(iterator beg, iterator end) const { // does this realy binds to aabb?  Except for minmax_, it looks also generally applied.
     const point_t range = minmax_.col(1) - minmax_.col(0);
     const Eigen::Index d = Eigen::Index(std::distance(range.data(), std::max_element(range.data(), range.data() + range.size())));
     unique_ptr<bvh::sorter_t> s(new bvh::sorter_t);
-    *s = [d](const primitive_t &a, const primitive_t &b) {
-        return a.barycenter(d) < b.barycenter(d);
+    *s = [d](const primitive_t *a, const primitive_t *b) {
+        return a->barycenter(d) < b->barycenter(d);
     };
     return s.release();
 }
 #else
-bvh::pivot_t *aabb::pivot(primitive_t *beg, primitive_t *end) const { // does this realy binds to aabb?  Except for minmax_, it looks also generally applied.
+bvh::pivot_t *aabb::pivot(iterator beg, iterator end) const { // does this realy binds to aabb?  Except for minmax_, it looks also generally applied.
     point_t range = minmax_.col(1) - minmax_.col(0);
     Eigen::Index d = Eigen::Index(std::distance(range.data(), std::max_element(range.data(), range.data() + range.size())));
     double c = (minmax_(d, 1) + minmax_(d, 0)) / 2;
     unique_ptr<bvh::pivot_t> p(new bvh::pivot_t);
-    *p = [d, c](const primitive_t &p) {
-        return p.barycenter[d] < c;
+    *p = [d, c](const primitive_t *p) {
+        return p->barycenter[d] < c;
     };
     return p.release();
 }
