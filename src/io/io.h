@@ -22,11 +22,11 @@
 
 namespace meshio {
 
-typedef Eigen::MatrixXd matrixd;
-typedef Eigen::MatrixXi matrixst;
+typedef Eigen::Matrix<double, 3, Eigen::Dynamic> matrixd;
+typedef Eigen::Matrix<int, 3, Eigen::Dynamic> matrixst;
 
 ///
-/// @brief load_obj, it only support pure triangle/quad mesh
+/// @brief load_obj, it only supports pure triangle mesh
 /// @param filename
 /// @param mesh output mesh matrix
 /// @param node output node matrix

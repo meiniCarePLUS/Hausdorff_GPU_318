@@ -25,9 +25,11 @@
 
 #include "log_helper.h"
 
-// Matrix types using Eigen
-typedef Eigen::MatrixXd matrixd_t;
-typedef Eigen::MatrixXi matrixst_t;  // size_t indices stored as int
+// Mesh storage: keep the hot path in fixed-row matrices.
+typedef Eigen::Matrix<double, 3, Eigen::Dynamic> matrixd_t;
+typedef Eigen::Matrix<int, 3, Eigen::Dynamic> matrixst_t;
+typedef Eigen::Matrix<double, 3, 2> minmax_t;
+typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> dyn_matrixd_t;
 typedef Eigen::Vector3d point_t;
 typedef std::pair<size_t, size_t> edge_t;
 

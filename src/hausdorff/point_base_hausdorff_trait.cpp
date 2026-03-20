@@ -17,7 +17,7 @@
 // local hausdorff distance
 
 #include <iomanip>
-#include <vector>
+#include <array>
 
 #include "core/common/conf.h"
 #include "core/geometry/primitive_dis.hpp"
@@ -46,10 +46,10 @@ void point_base_trait::shrink_bound(const primitive_t &primitive, const primitiv
 
 // IDEA: is it possible to use current bounds to reduce some distance computation?
 void point_base_trait::iterate_leaf(const primitive_t &primitive, const bvh &B, double &L, double &U, point_t &max_point) {
-    // find closest point on B to each vertices of primitive
-    vector<primitive_t *> closest_primitives;
+    using point_distance_matrix_t = Eigen::Matrix<double, 4, 3>;
 
-    closest_primitives.resize(static_cast<size_t>(primitive.points.cols()));
+    // find closest point on B to each vertices of primitive
+    std::array<primitive_t *, 4> closest_primitives{};
 
     for (Eigen::Index i = 0; i < primitive.points.cols(); ++i)
         closest_primitives[static_cast<size_t>(i)] = closest_cache_.get(static_cast<size_t>(primitive.point_id[i]), primitive.points.col(i));
@@ -60,27 +60,28 @@ void point_base_trait::iterate_leaf(const primitive_t &primitive, const bvh &B, 
 #ifdef USE_TRAIT
         nearest_travel_trait nearest_trait(mid_point);
         B.travel(&nearest_trait);
-        closest_primitives.push_back(nearest_trait.result.closest_primitive);
+        closest_primitives[3] = nearest_trait.result.closest_primitive;
 #else
         nearest n;
         B.compute_nearest_to(mid_point, n);
-        closest_primitives.push_back(n.closest_primitive);
+        closest_primitives[3] = n.closest_primitive;
 #endif
     }
 
     // calculate new upper and lower bound
-    matrixd_t dis_matrix(static_cast<Eigen::Index>(closest_primitives.size()), primitive.points.cols());
+    point_distance_matrix_t dis_matrix = point_distance_matrix_t::Zero();
+    constexpr Eigen::Index active_rows = 4;
 
     // #pragma omp parallel for
-    for (size_t tri_on_B = 0; tri_on_B < closest_primitives.size(); ++tri_on_B) {
+    for (Eigen::Index tri_on_B = 0; tri_on_B < active_rows; ++tri_on_B) {
         for (Eigen::Index point_on_A = 0; point_on_A < primitive.points.cols(); ++point_on_A) {
-            dis_matrix(static_cast<Eigen::Index>(tri_on_B), point_on_A) = point_primitive_sqr_dis(primitive.points.col(point_on_A), closest_primitives[tri_on_B]);
+            dis_matrix(tri_on_B, point_on_A) = point_primitive_sqr_dis(primitive.points.col(point_on_A), closest_primitives[static_cast<size_t>(tri_on_B)]);
         }
     }
     // local lower bound
     double local_lower_bound = std::numeric_limits<double>::lowest();
     Eigen::Index max_point_iter = 0;
-    for (Eigen::Index i = 0; i < std::min(dis_matrix.rows(), dis_matrix.cols()); ++i) {
+    for (Eigen::Index i = 0; i < std::min(active_rows, dis_matrix.cols()); ++i) {
         if (local_lower_bound < dis_matrix(i, i)) {
             local_lower_bound = dis_matrix(i, i);
             max_point_iter = i;
@@ -89,7 +90,7 @@ void point_base_trait::iterate_leaf(const primitive_t &primitive, const bvh &B, 
 
     // local upper bound
     double local_upper_bound = std::numeric_limits<double>::max();
-    for (Eigen::Index i = 0; i < dis_matrix.rows(); ++i) {
+    for (Eigen::Index i = 0; i < active_rows; ++i) {
         local_upper_bound = min(local_upper_bound, dis_matrix.row(i).maxCoeff());
     }
 

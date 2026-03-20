@@ -147,7 +147,7 @@ public:
     virtual void init_bounding_volume(const primitive_t *beg, const primitive_t *end);
     virtual std::shared_ptr<bvh> create_node() const { return std::shared_ptr<bvh>(new aabb); }
     virtual bool intersect_to(const point_t &p) const;
-    matrixd_t get_minmax() const {
+    const minmax_t &get_minmax() const {
         return minmax_;
     }
     virtual double squared_distance(const point_t &p) const;
@@ -161,7 +161,7 @@ protected:
 #endif
 
     // for aabb tree, we use the vertices of diagonal to represent the bounding volume
-    matrixd_t minmax_; // 3x2
+    minmax_t minmax_; // 3x2
 };
 
 // create root bvh node by type

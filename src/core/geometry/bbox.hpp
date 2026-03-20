@@ -21,7 +21,6 @@
 struct bbox {
 
     bbox() {
-        minmax_.resize(3, 2);
         minmax_.col(0).setConstant(std::numeric_limits<double>::max());
         minmax_.col(1).setConstant(-std::numeric_limits<double>::max());
     }
@@ -44,7 +43,7 @@ struct bbox {
         return diagonal.squaredNorm();
     }
 
-    matrixd_t minmax_;
+    minmax_t minmax_;
 };
 
 #endif

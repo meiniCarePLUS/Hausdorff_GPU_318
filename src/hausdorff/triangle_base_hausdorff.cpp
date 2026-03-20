@@ -92,10 +92,13 @@ void triangle_base_trait::shrink_bound(const primitive_t &primitive, const primi
 template <typename iterator>
 void triangle_base_trait::iterate_leaf_inner(const primitive_t &primitive, iterator beg,
                                              iterator end, double &local_L, double &local_U, point_t &temp_vec) {
+    using triangle_distance_matrix_t = Eigen::Matrix<double, 3, 4>;
+
     // calculate the hausdorff distance with every primitive
     // calculate distance matrix
     size_t size = end - beg;
-    matrixd_t dis_matrix = matrixd_t::Ones(primitive.points.cols(), static_cast<Eigen::Index>(size));
+    triangle_distance_matrix_t dis_matrix = triangle_distance_matrix_t::Ones();
+    const Eigen::Index active_cols = static_cast<Eigen::Index>(size);
     for (Eigen::Index point_iter = 0; point_iter != primitive.points.cols(); ++point_iter) {
         for (auto primitive_iter = beg; primitive_iter != end; ++primitive_iter) {
             dis_matrix(point_iter, primitive_iter - beg) = point_primitive_sqr_dis(primitive.points.col(point_iter), get_primitive(primitive_iter));
@@ -103,7 +106,7 @@ void triangle_base_trait::iterate_leaf_inner(const primitive_t &primitive, itera
     }
 
     // update upper bound
-    for (Eigen::Index primitive_iter = 0; primitive_iter != dis_matrix.cols(); ++primitive_iter) {
+    for (Eigen::Index primitive_iter = 0; primitive_iter != active_cols; ++primitive_iter) {
         local_U = min(dis_matrix.col(primitive_iter).maxCoeff(), local_U);
     }
 

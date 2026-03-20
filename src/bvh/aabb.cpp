@@ -61,7 +61,6 @@ bool aabb::intersect_to(const point_t &p) const {
 }
 
 void aabb::init_bounding_volume(const primitive_t *beg, const primitive_t *end) {
-    minmax_.resize(3, 2);
     minmax_.col(0).setConstant(std::numeric_limits<double>::max());
     minmax_.col(1).setConstant(-std::numeric_limits<double>::max());
 

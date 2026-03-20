@@ -33,20 +33,15 @@ int load_obj(const char *filename, matrixst &faces, matrixd &nodes) {
     if (!igl::readOBJ(filename, V, F)) {
         return -1;
     }
+    if (V.cols() != 3 || F.cols() != 3) {
+        return -1;
+    }
 
     nodes.resize(3, V.rows());
-    faces.resize(F.cols(), F.rows());
+    faces.resize(3, F.rows());
 
-    for (size_t i = 0; i < V.rows(); ++i) {
-        for (size_t j = 0; j < 3; ++j) {
-            nodes(j, i) = V(i, j);
-        }
-    }
-    for (size_t i = 0; i < F.rows(); ++i) {
-        for (size_t j = 0; j < F.cols(); ++j) {
-            faces(j, i) = F(i, j);
-        }
-    }
+    nodes = V.transpose();
+    faces = F.transpose();
     cerr << "# [info] vertex " << V.rows() << " face " << F.rows() << endl;
 
     return 0;
