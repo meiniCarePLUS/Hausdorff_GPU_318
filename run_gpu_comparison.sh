@@ -12,8 +12,8 @@ set -u
 # ---------------- 配置区域 ----------------
 GPU_BIN="./build_gpu/bin/hausdorff"
 MODEL_DIR="./sample_data/model"
-LOG_DIR="./logs_gpu_comparison_v7"
-CPU_RESULTS_DIR="./logs_serial"
+LOG_DIR="./logs_gpu_comparison_g10"
+CPU_RESULTS_DIR="./logs_cpu_serial"
 
 # 与现有 CPU log 一致的参数
 ERROR_BOUND="0.01"
