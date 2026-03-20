@@ -1,0 +1,12 @@
+# [info] vertex 4406 face 8864
+[mesh_0_num_of_vertices] 4406
+[mesh_0_num_of_faces] 8864
+./thingk10/39677_sf.obj 8864 triangles
+# [info] vertex 13908 face 4636
+[mesh_1_num_of_vertices] 13908
+[mesh_1_num_of_faces] 4636
+./thingk10/39677.obj 4636 triangles
+[rel_error_bound] 0.01
+[stop_condition] rel
+[bvh_build_cost] 188.804
+hausdorff: /root/Hausdorff_cpu/build/_deps/zjucad.matrix-src/include/zjucad/matrix/matrix_proxy.h:59: zjucad::matrix::idx_cv_i<E>::idx_cv_i(E&, zjucad::matrix::idx_cv_i<E>::size_type) [with E = const zjucad::matrix::matrix<double, zjucad::matrix::column_major, zjucad::matrix::bounded_array<double, 9>, false>; zjucad::matrix::idx_cv_i<E>::size_type = long int]: Assertion `m_col >= 0 && m_col < m_m.size(2)' failed.

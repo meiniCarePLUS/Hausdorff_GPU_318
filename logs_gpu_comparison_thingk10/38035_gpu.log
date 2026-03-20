@@ -1,0 +1,35 @@
+# [info] vertex 1778 face 3556
+[mesh_0_num_of_vertices] 1778
+[mesh_0_num_of_faces] 3556
+./thingk10/38035_sf.obj 3556 triangles
+# [info] vertex 11436 face 3812
+[mesh_1_num_of_vertices] 11436
+[mesh_1_num_of_faces] 3812
+./thingk10/38035.obj 3812 triangles
+[rel_error_bound] 0.01
+[stop_condition] rel
+[bvh_build_cost] 63.6629
+[culling rate] 0.0326209
+
+
+########  calculation result  ########
+[first_travel_bound] 0.0450667 - 4.75307
+[distance] 0.0815852 - 0.0822968
+[max_point] 17.411 -50.5071 0.0822815
+[mean_distance] 0.081941
+
+
+########  performance summary  ########
+[first_travel_cost] 15.3918
+[reduce_bound_cost] 600.851
+[total_cost] 616.243
+[voronoi_count] 0
+[mid_subdivide_count] 231172
+[total_subdivision_count] 231172
+[point_triangle_distance_count] 6151999
+[triangle_triangle_distance_count] 0
+
+
+########  reverse check  ########
+[reverse_check_result] 0.0815852
+[reverse_check_primitive_id] 3048
