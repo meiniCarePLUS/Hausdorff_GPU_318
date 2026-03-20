@@ -23,6 +23,10 @@
 
 using namespace std;
 
+namespace {
+constexpr int kParallelBuildThreshold = 2048;
+}
+
 bvh::bvh() {
     children_[0] = 0;
     children_[1] = 0;
@@ -65,9 +69,17 @@ void bvh::build_bvh(iterator beg, iterator end) {
     }
 
     this->children_[0] = create_node();
-    this->children_[0]->build_bvh(beg, m);
     this->children_[1] = create_node();
-    this->children_[1]->build_bvh(m, end);
+    if ((end - beg) >= kParallelBuildThreshold) {
+#pragma omp task shared(beg, m)
+        this->children_[0]->build_bvh(beg, m);
+#pragma omp task shared(m, end)
+        this->children_[1]->build_bvh(m, end);
+#pragma omp taskwait
+    } else {
+        this->children_[0]->build_bvh(beg, m);
+        this->children_[1]->build_bvh(m, end);
+    }
 }
 
 void bvh::travel(bvh_travel_trait *trait) const {

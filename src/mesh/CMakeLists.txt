@@ -14,3 +14,6 @@ file(GLOB zycgeo_mesh_src "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_library(zycgeo_mesh ${zycgeo_mesh_src})
 target_link_libraries(zycgeo_mesh zycgeo_core)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(zycgeo_mesh PUBLIC OpenMP::OpenMP_CXX)
+endif()

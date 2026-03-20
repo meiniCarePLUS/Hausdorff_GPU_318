@@ -16,6 +16,9 @@ add_library(zycgeo_hausdorff ${zycgeo_hausdorff_src})
 target_link_libraries(zycgeo_hausdorff zycgeo_core
                                        zycgeo_mesh
                                        zycgeo_bvh)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(zycgeo_hausdorff PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 # GPU initial bounds + batch query library
 add_library(zycgeo_gpu_bounds STATIC

@@ -17,6 +17,7 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <unordered_set>
 
 #include "bvh/nearest_query.h"
 #include "core/geometry/primitive_dis.hpp"
@@ -160,7 +161,7 @@ hausdorff_result hausdorff(tri_mesh &A, const tri_mesh &B,
     // Batch size: process up to BATCH triangles per GPU round-trip.
     // Larger batches amortize kernel launch overhead; smaller batches preserve
     // priority-queue ordering. 8 is a good balance for typical meshes.
-    static const int BATCH = 8;
+    static const int BATCH = 64;
 
     while (!stop_condition(sqrt(L), sqrt(U)) && (!trait->left_tris.empty())) {
         // Collect up to BATCH active triangles from the priority queue.
@@ -187,16 +188,15 @@ hausdorff_result hausdorff(tri_mesh &A, const tri_mesh &B,
             std::vector<size_t> ids_buf;
             pts_buf.reserve(BATCH * 6 * 3);
             ids_buf.reserve(BATCH * 6);
+            std::unordered_set<size_t> seen_ids;
+            seen_ids.reserve(BATCH * 6);
 
             for (int b = 0; b < (int)batch.size(); ++b)
                 for (int ti = 0; ti < 4; ++ti)
                     for (int vi = 0; vi < 3; ++vi) {
                         size_t id = sub[b][ti].point_id(vi, 0);
                         if (trait->closest_cache_.get(id) != nullptr) continue;
-                        bool dup = false;
-                        for (size_t j = 0; j < ids_buf.size(); ++j)
-                            if (ids_buf[j] == id) { dup = true; break; }
-                        if (dup) continue;
+                        if (!seen_ids.insert(id).second) continue;
                         ids_buf.push_back(id);
                         pts_buf.push_back(sub[b][ti].points(0, vi));
                         pts_buf.push_back(sub[b][ti].points(1, vi));

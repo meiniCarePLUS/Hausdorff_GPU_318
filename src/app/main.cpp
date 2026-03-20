@@ -145,10 +145,15 @@ int main(int argc, char **argv) // parse arguments and call Hausdorff
         pbvh[m].reset(create_bvh_node("aabb"));
         build_primitive_array(meshes[m], tris[m]);
         tri_ptrs[m].resize(tris[m].size());
+#pragma omp parallel for schedule(static)
         for (size_t i = 0; i < tris[m].size(); ++i) {
             tri_ptrs[m][i] = &tris[m][i];
         }
-        pbvh[m]->build_bvh(tri_ptrs[m].data(), tri_ptrs[m].data() + tri_ptrs[m].size());
+#pragma omp parallel
+        {
+#pragma omp single nowait
+            pbvh[m]->build_bvh(tri_ptrs[m].data(), tri_ptrs[m].data() + tri_ptrs[m].size());
+        }
     }
 
     // Build GPU LBVH for mesh B (reuse tris[1] data already computed above).

@@ -16,3 +16,6 @@ file(GLOB zycgeo_core_source "${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp"
 
 add_library(zycgeo_core ${zycgeo_core_source})
 target_link_libraries(zycgeo_core PUBLIC Eigen3::Eigen)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(zycgeo_core PUBLIC OpenMP::OpenMP_CXX)
+endif()

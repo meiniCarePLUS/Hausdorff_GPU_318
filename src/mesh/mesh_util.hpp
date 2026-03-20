@@ -15,6 +15,7 @@
 #ifndef MESH_UTIL_HPP
 #define MESH_UTIL_HPP
 
+#include <cstddef>
 #include <vector>
 
 #include "core/common/conf.h"
@@ -24,6 +25,8 @@ void build_primitive_array(const tri_mesh &mesh, std::vector<primitive_t> &tris)
     const matrixd_t &v = *mesh.v_;
     const matrixst_t &t = *mesh.t_;
     tris.resize(static_cast<size_t>(t.cols())); // resize to number of triangles
+
+#pragma omp parallel for schedule(static)
     for (size_t ti = 0; ti < tris.size(); ++ti) {
         const Eigen::Vector3i tri = t.col(static_cast<Eigen::Index>(ti));
         for (Eigen::Index local = 0; local < 3; ++local) {

@@ -14,6 +14,9 @@ file(GLOB zycgeo_bvh_src "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 add_library(zycgeo_bvh ${zycgeo_bvh_src})
 target_link_libraries(zycgeo_bvh zycgeo_core)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(zycgeo_bvh PUBLIC OpenMP::OpenMP_CXX)
+endif()
 target_include_directories(
     zycgeo_bvh PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 )
